@@ -6,20 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('lesson_progress', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('enrollment_id')->constrained('enrollments')->onDelete('cascade');
+            $table->foreignId('content_id')->constrained('contents')->onDelete('cascade');
+            $table->timestamp('completed_at')->useCurrent();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('lesson_progress');
