@@ -20,7 +20,7 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-bold text-gray-800">Kursus Saya</h3>
-                        <a href="#" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">
+                        <a href="{{ route('courses.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">
                             + Buat Kursus Baru
                         </a>
                     </div>
