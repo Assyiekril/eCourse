@@ -1,17 +1,83 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+            
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6 text-gray-900">
+                    Selamat datang, <strong>{{ Auth::user()->username }}</strong>! 
+                    Anda login sebagai <span class="badge bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs uppercase">{{ Auth::user()->role }}</span>.
                 </div>
             </div>
+
+            @if(Auth::user()->role === 'teacher')
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">Kursus Saya</h3>
+                        <a href="#" class="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">
+                            + Buat Kursus Baru
+                        </a>
+                    </div>
+
+                    @if(isset($myCourses) && $myCourses->count() > 0)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+                                    <th class="py-3 px-6 text-left">Judul Kursus</th>
+                                    <th class="py-3 px-6 text-left">Kategori</th>
+                                    <th class="py-3 px-6 text-center">Status</th>
+                                    <th class="py-3 px-6 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm font-light">
+                                @foreach($myCourses as $course)
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="py-3 px-6 text-left whitespace-nowrap font-medium">
+                                        {{ $course->title }}
+                                    </td>
+                                    <td class="py-3 px-6 text-left">
+                                        {{ $course->category->name }}
+                                    </td>
+                                    <td class="py-3 px-6 text-center">
+                                        <span class="{{ $course->is_active ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700' }} py-1 px-3 rounded-full text-xs">
+                                            {{ $course->is_active ? 'Aktif' : 'Non-Aktif' }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-6 text-center">
+                                        <div class="flex item-center justify-center space-x-2">
+                                            <a href="#" class="text-indigo-500 hover:text-indigo-700 font-semibold">Edit</a>
+                                            <span class="text-gray-300">|</span>
+                                            <a href="#" class="text-red-500 hover:text-red-700 font-semibold">Hapus</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @else
+                        <p class="text-gray-500 text-center py-4">Anda belum memiliki kursus.</p>
+                    @endif
+                </div>
+            </div>
+            @endif
+
+            @if(Auth::user()->role === 'admin')
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-bold mb-4">Statistik Admin</h3>
+                    <p>Area ini akan berisi manajemen User dan Kategori.</p>
+                </div>
+            </div>
+            @endif
+
         </div>
     </div>
 </x-app-layout>
