@@ -36,4 +36,13 @@ class CourseController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Kursus berhasil dibuat!');
     }
+
+    public function show(Course $course)
+    {
+        $course->load(['teacher', 'category', 'contents' => function($query) {
+            $query->orderBy('created_at', 'asc');
+        }]);
+
+        return view('courses.show', compact('course'));
+    }
 }

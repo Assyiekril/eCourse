@@ -17,6 +17,8 @@ Route::get('/', function () {
 });
 
 
+Route::get('/course/{course}', [CourseController::class, 'show'])->name('courses.show');
+
 
 Route::get('/dashboard', function () {
     /** @var User $user */
