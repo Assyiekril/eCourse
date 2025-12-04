@@ -14,8 +14,9 @@ class UserController extends Controller
     public function index()
     {
         if (Auth::user()->role !== 'admin') { abort(403); }
-
-        $users = User::latest()->paginate(10);
+        $users = User::orderByRaw("FIELD(role, 'admin', 'teacher', 'student')")
+                     ->orderBy('created_at', 'asc')
+                     ->paginate(10);
         
         return view('admin.users.index', compact('users'));
     }
