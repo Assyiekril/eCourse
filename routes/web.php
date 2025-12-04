@@ -1,19 +1,43 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CourseController;
 use App\Models\Course;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
-Route::get('/', function () {
-    $courses = Course::with(['teacher', 'category'])
-        ->where('is_active', true)
-        ->latest()
-        ->get();
-    return view('welcome', compact('courses'));
+Route::get('/', function (Request $request) {
+
+    $popularCourses = Course::withCount('students')
+                        ->with(['category', 'teacher'])
+                        ->where('is_active', true)
+                        ->orderBy('students_count', 'desc')
+                        ->take(5)
+                        ->get();
+
+    $query = Course::with(['teacher', 'category'])
+                ->where('is_active', true);
+
+    if ($request->has('search') && $request->search != '') {
+        $query->where(function($q) use ($request) {
+            $q->where('title', 'like', '%' . $request->search . '%')
+              ->orWhere('description', 'like', '%' . $request->search . '%');
+        });
+    }
+
+    if ($request->has('category') && $request->category != '') {
+        $query->where('category_id', $request->category);
+    }
+
+    $courses = $query->latest()->get();
+    
+    $categories = Category::all();
+
+    return view('welcome', compact('popularCourses', 'courses', 'categories'));
 });
 
 
