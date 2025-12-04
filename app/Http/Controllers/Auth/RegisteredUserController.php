@@ -19,27 +19,30 @@ class RegisteredUserController extends Controller
         return view('auth.register');
     }
 
-    /**
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'username' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:student,teacher'],
+            'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()],
         ]);
+
+        $isActive = $request->role === 'student' ? true : false;
 
         $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'student', 
-            'is_active' => true,
+            'role' => $request->role,
+            'is_active' => $isActive,
         ]);
 
         event(new Registered($user));
+
+        if ($request->role === 'teacher') {
+            return redirect()->route('login')->with('status', 'Pendaftaran berhasil! Akun Teacher Anda menunggu persetujuan Admin sebelum bisa login.');
+        }
 
         Auth::login($user);
 

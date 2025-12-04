@@ -95,8 +95,8 @@
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Manajemen User</h3>
                         <p class="text-gray-600 mb-4">Kelola akun Teacher dan Student.</p>
-                        <a href="#" class="inline-block bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed">
-                            Segera Hadir
+                        <a href="{{ route('users.index') }}" class="inline-block bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700">
+                            Kelola User &rarr;
                         </a>
                     </div>
                 </div>
