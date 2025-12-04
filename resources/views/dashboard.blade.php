@@ -80,10 +80,25 @@
             @endif
 
             @if(Auth::user()->role === 'admin')
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-bold mb-4">Statistik Admin</h3>
-                    <p>Area ini akan berisi manajemen User dan Kategori.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Manajemen Kategori</h3>
+                        <p class="text-gray-600 mb-4">Tambah, edit, atau hapus kategori kursus.</p>
+                        <a href="{{ route('categories.index') }}" class="inline-block bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700">
+                            Kelola Kategori &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Manajemen User</h3>
+                        <p class="text-gray-600 mb-4">Kelola akun Teacher dan Student.</p>
+                        <a href="#" class="inline-block bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed">
+                            Segera Hadir
+                        </a>
+                    </div>
                 </div>
             </div>
             @endif

@@ -52,24 +52,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/courses/{course}', [App\Http\Controllers\CourseController::class, 'destroy'])->name('courses.destroy');
 
 
-    Route::get('/courses/{course}/contents/create', [App\Http\Controllers\ContentController::class, 'create'])
-        ->name('contents.create');
-    Route::post('/courses/{course}/contents', [App\Http\Controllers\ContentController::class, 'store'])
-        ->name('contents.store');
-    Route::get('/lessons/{content}', [App\Http\Controllers\ContentController::class, 'show'])
-        ->name('contents.show');
-    Route::get('/contents/{content}/edit', [App\Http\Controllers\ContentController::class, 'edit'])
-        ->name('contents.edit');
-    Route::put('/contents/{content}', [App\Http\Controllers\ContentController::class, 'update'])
-        ->name('contents.update');
+    Route::get('/courses/{course}/contents/create', [App\Http\Controllers\ContentController::class, 'create'])->name('contents.create');
+    Route::post('/courses/{course}/contents', [App\Http\Controllers\ContentController::class, 'store'])->name('contents.store');
+    Route::get('/lessons/{content}', [App\Http\Controllers\ContentController::class, 'show'])->name('contents.show');
+    Route::get('/contents/{content}/edit', [App\Http\Controllers\ContentController::class, 'edit'])->name('contents.edit');
+    Route::put('/contents/{content}', [App\Http\Controllers\ContentController::class, 'update'])->name('contents.update');
 
 
-    Route::post('/courses/{course}/join', [App\Http\Controllers\EnrollmentController::class, 'store'])
-        ->name('courses.join');
+    Route::post('/courses/{course}/join', [App\Http\Controllers\EnrollmentController::class, 'store'])->name('courses.join');
 
         
-    Route::post('/lessons/{content}/toggle-progress', [App\Http\Controllers\LessonProgressController::class, 'toggle'])
-        ->name('lessons.toggle');
+    Route::post('/lessons/{content}/toggle-progress', [App\Http\Controllers\LessonProgressController::class, 'toggle'])->name('lessons.toggle');
+
+
+    Route::resource('categories', App\Http\Controllers\CategoryController::class)->except(['create', 'edit', 'show']);
+
+
+    Route::resource('users', App\Http\Controllers\UserController::class);
 });
 
 

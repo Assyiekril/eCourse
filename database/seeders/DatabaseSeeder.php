@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {   
+
         $admin = User::create([
             'username' => 'Admin',
             'email' => 'admin@example.com',
@@ -23,20 +24,21 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $teacher = User::create([
-            'username' => 'Teacher',
+            'username' => 'Teacher1',
             'email' => 'teacher@example.com',
             'password' => Hash::make('password'),
             'role' => 'teacher',
             'is_active' => true,
         ]);
 
-        $teacher = User::create([
+        $teacher2 = User::create([
             'username' => 'Teacher2',
             'email' => 'teacher2@example.com',
             'password' => Hash::make('password'),
             'role' => 'teacher',
             'is_active' => true,
         ]);
+
 
         $student = User::create([
             'username' => 'Student',
@@ -57,9 +59,9 @@ class DatabaseSeeder extends Seeder
             'description' => 'Analisis data dan machine learning.',
         ]);
 
-        
+
         $courseLaravel = Course::create([
-            'teacher_id' => $teacher->id, 
+            'teacher_id' => $teacher->id,
             'category_id' => $catWeb->id,
             'title' => 'Mastering Laravel 12',
             'description' => 'Panduan lengkap Laravel dari nol sampai mahir.',
@@ -69,6 +71,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         
+        Course::create([
+            'teacher_id' => $teacher2->id,
+            'category_id' => $catData->id,
+            'title' => 'Dasar Data Science',
+            'description' => 'Pengenalan Python untuk data.',
+            'start_date' => now(),
+            'end_date' => now()->addMonths(2),
+            'is_active' => true,
+        ]);
+
+
         Content::create([
             'course_id' => $courseLaravel->id,
             'title' => 'Pengenalan Laravel',
@@ -81,7 +94,7 @@ class DatabaseSeeder extends Seeder
             'body' => 'Cara install via Composer: composer create-project laravel/laravel...',
         ]);
 
-        
+
         Enrollment::create([
             'student_id' => $student->id,
             'course_id' => $courseLaravel->id,
