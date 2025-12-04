@@ -30,6 +30,14 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
+        $teacher = User::create([
+            'username' => 'Teacher2',
+            'email' => 'teacher2@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'teacher',
+            'is_active' => true,
+        ]);
+
         $student = User::create([
             'username' => 'Student',
             'email' => 'student@example.com',

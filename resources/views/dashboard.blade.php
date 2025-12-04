@@ -7,10 +7,10 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
+
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 text-gray-900">
-                    Selamat datang, <strong>{{ Auth::user()->username }}</strong>! 
+                    Selamat datang, <strong>{{ Auth::user()->username }}</strong>!
                     Anda login sebagai <span class="badge bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-xs uppercase">{{ Auth::user()->role }}</span>.
                 </div>
             </div>
@@ -52,9 +52,19 @@
                                     </td>
                                     <td class="py-3 px-6 text-center">
                                         <div class="flex item-center justify-center space-x-2">
-                                            <a href="#" class="text-indigo-500 hover:text-indigo-700 font-semibold">Edit</a>
+                                            <a href="{{ route('courses.edit', $course->id) }}" class="text-indigo-500 hover:text-indigo-700 font-bold">
+                                                Edit
+                                            </a>
+
                                             <span class="text-gray-300">|</span>
-                                            <a href="#" class="text-red-500 hover:text-red-700 font-semibold">Hapus</a>
+
+                                            <form action="{{ route('courses.destroy', $course->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kursus ini? Semua materi di dalamnya juga akan terhapus!');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:text-red-700 font-bold">
+                                                    Hapus
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -63,7 +73,7 @@
                         </table>
                     </div>
                     @else
-                        <p class="text-gray-500 text-center py-4">Anda belum memiliki kursus.</p>
+                    <p class="text-gray-500 text-center py-4">Anda belum memiliki kursus.</p>
                     @endif
                 </div>
             </div>
