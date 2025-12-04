@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>eCourse - Master the Code</title>
+    <title>eCourse</title>
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-900 font-sans antialiased text-gray-100 selection:bg-green-500 selection:text-white">
@@ -80,7 +81,6 @@
 
     @if($popularCourses->count() > 0)
     <div id="popular" class="bg-gray-800 border-b border-gray-700 min-h-screen flex items-center relative">
-        
         <div class="absolute inset-0" style="background-image: radial-gradient(#4b5563 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05;"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
@@ -145,13 +145,9 @@
                     </p>
                 </div>
                 
-                <form action="{{ url('/') }}" method="GET" class="flex items-center gap-2">
-                    @if(request('search'))
-                        <input type="hidden" name="search" value="{{ request('search') }}">
-                    @endif
-                    
-                    <label for="category" class="text-gray-400 text-sm">Filter:</label>
-                    <select name="category" onchange="this.form.submit()" class="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:ring-green-500 focus:border-green-500 text-sm">
+                <div class="flex items-center gap-2">
+                    <label for="categoryFilter" class="text-gray-400 text-sm">Filter:</label>
+                    <select id="categoryFilter" class="bg-gray-800 text-white border border-gray-700 rounded-lg py-2 px-4 focus:ring-green-500 focus:border-green-500 text-sm">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
@@ -159,7 +155,7 @@
                             </option>
                         @endforeach
                     </select>
-                </form>
+                </div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -213,6 +209,22 @@
             <p class="text-gray-500 text-sm font-mono">&copy; {{ date('Y') }} eCourse Platform. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+            const category = this.value;
+            const search = "{{ request('search') }}";
+            let url = "{{ url('/') }}?category=" + category;
+            
+            if (search) {
+                url += "&search=" + search;
+            }
+            
+            url += "#katalog";
+            
+            window.location.href = url;
+        });
+    </script>
 
 </body>
 </html>

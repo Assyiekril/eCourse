@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
+    
     public function create()
     {
         $categories = Category::all();
