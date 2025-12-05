@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
-    
+
     public function create()
     {
         $categories = Category::all();
@@ -41,22 +41,22 @@ class CourseController extends Controller
     public function show(Course $course)
     {
 
-        $course->load(['teacher', 'category', 'contents' => function($query) {
+        $course->load(['teacher', 'category', 'contents' => function ($query) {
             $query->orderBy('created_at', 'asc');
         }]);
 
         $isEnrolled = false;
         if (Auth::check() && Auth::user()->role === 'student') {
             $isEnrolled = \App\Models\Enrollment::where('student_id', Auth::id())
-                            ->where('course_id', $course->id)
-                            ->exists();
+                ->where('course_id', $course->id)
+                ->exists();
         }
 
         return view('courses.show', compact('course', 'isEnrolled'));
     }
 
 
-    
+
     public function edit(Course $course)
     {
         if (Auth::user()->role !== 'admin' && Auth::id() !== $course->teacher_id) {
@@ -91,7 +91,7 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
-        
+
         if (Auth::user()->role !== 'admin' && Auth::id() !== $course->teacher_id) {
             abort(403);
         }
@@ -99,5 +99,25 @@ class CourseController extends Controller
         $course->delete();
 
         return redirect()->route('dashboard')->with('success', 'Kursus berhasil dihapus.');
+    }
+
+
+    public function join($id)
+    {
+        $course = \App\Models\Course::findOrFail($id);
+        /** @var User $user */
+        $user = Auth::user();
+
+        $alreadyJoined = $user->joinedCourses()
+            ->where('course_id', $id)
+            ->exists();
+
+        if ($alreadyJoined) {
+            return redirect()->back()->with('error', 'Anda sudah terdaftar di kursus ini.');
+        }
+
+        $user->joinedCourses()->attach($id);
+
+        return redirect()->route('dashboard')->with('success', 'Selamat! Anda berhasil bergabung di kursus ' . $course->title);
     }
 }

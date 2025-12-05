@@ -21,13 +21,13 @@ class User extends Authenticatable
         'is_active',
     ];
 
-    
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    
+
     protected function casts(): array
     {
         return [
@@ -44,14 +44,21 @@ class User extends Authenticatable
         return $this->hasMany(Course::class, 'teacher_id');
     }
 
-
+    
     public function enrolledCourses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'enrollments', 'student_id', 'course_id')
-                    ->withPivot('enrolled_at')
-                    ->withTimestamps();
+            ->withPivot('enrolled_at')
+            ->withTimestamps();
     }
-    
+
+
+    public function joinedCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id')
+            ->withTimestamps();
+    }
+
 
     public function hasRole(string $role): bool
     {

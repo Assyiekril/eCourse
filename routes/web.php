@@ -47,17 +47,16 @@ Route::get('/course/{course}', [CourseController::class, 'show'])->name('courses
 Route::get('/dashboard', function () {
     /** @var User $user */
     $user = Auth::user();
-
-    $data = [];
+    $myCourses = [];
 
     if ($user->role === 'teacher') {
-        $data['myCourses'] = $user->coursesTaught()
-            ->with('category')
-            ->latest()
-            ->get();
+        $myCourses = \App\Models\Course::where('teacher_id', $user->id)->get();
+    } 
+    elseif ($user->role === 'student') {
+        $myCourses = $user->joinedCourses()->with('teacher')->get();
     }
 
-    return view('dashboard', $data);
+    return view('dashboard', compact('myCourses'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -93,6 +92,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('users', App\Http\Controllers\UserController::class);
+
+    Route::post('/courses/{id}/join', [CourseController::class, 'join'])->name('courses.join');
 });
 
 
