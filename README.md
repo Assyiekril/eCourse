@@ -6,6 +6,7 @@
 
 **eCourse** adalah aplikasi pembelajaran online berbasis web yang dibangun dengan Laravel. Aplikasi ini dirancang untuk menghubungkan pengajar dan siswa dengan antarmuka modern, sistem manajemen kursus yang lengkap, dan pembagian hak akses (role) yang aman.
 
+
 ---
 
 ## 🚀 Fitur Unggulan
